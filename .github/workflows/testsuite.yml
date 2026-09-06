@@ -74,7 +74,7 @@ on:
 env:
   # The one variable that separates the arms: on baseline, action-checkout
   # skips its Set up Chalk step entirely.
-  CHALK_ON: ${{ github.event_name == 'workflow_dispatch' && inputs.leg != 'baseline' }}
+  CHALK_ON: ${{ inputs.leg == 'instrumented' }}
   PERL_SKIP_TTY_TEST: 1
   CONTINUOUS_INTEGRATION: 1
 
@@ -166,18 +166,18 @@ jobs:
     timeout-minutes: 120
 
     outputs:
-      run_all_jobs: ${{ github.event_name == 'workflow_dispatch' && 'true' || (steps.check_extended_testing.outputs.run_all_jobs) }}
-      ci_force_linux: ${{ github.event_name == 'workflow_dispatch' && 'true' || (steps.ci_config.outputs.ci_force_linux) }}
+      run_all_jobs: ${{ 'push' == 'workflow_dispatch' && 'true' || (steps.check_extended_testing.outputs.run_all_jobs) }}
+      ci_force_linux: ${{ 'push' == 'workflow_dispatch' && 'true' || (steps.ci_config.outputs.ci_force_linux) }}
       ci_force_linux_i386: ${{ steps.ci_config.outputs.ci_force_linux_i386 }}
-      ci_force_install: ${{ github.event_name == 'workflow_dispatch' && 'true' || (steps.ci_config.outputs.ci_force_install) }}
+      ci_force_install: ${{ 'push' == 'workflow_dispatch' && 'true' || (steps.ci_config.outputs.ci_force_install) }}
       ci_force_macos: ${{ steps.ci_config.outputs.ci_force_macos }}
       ci_force_msvc143: ${{ steps.ci_config.outputs.ci_force_msvc143 }}
       ci_force_mingw64: ${{ steps.ci_config.outputs.ci_force_mingw64 }}
       ci_force_cygwin: ${{ steps.ci_config.outputs.ci_force_cygwin }}
-      ci_force_minitest: ${{ github.event_name == 'workflow_dispatch' && 'true' || (steps.ci_config.outputs.ci_force_minitest) }}
-      ci_force_asan: ${{ github.event_name == 'workflow_dispatch' && 'true' || (steps.ci_config.outputs.ci_force_asan) }}
-      ci_force_perl_unicode: ${{ github.event_name == 'workflow_dispatch' && 'true' || (steps.ci_config.outputs.ci_force_perl_unicode) }}
-      ci_force_dist_modules: ${{ github.event_name == 'workflow_dispatch' && 'true' || (steps.ci_config.outputs.ci_force_dist_modules) }}
+      ci_force_minitest: ${{ 'push' == 'workflow_dispatch' && 'true' || (steps.ci_config.outputs.ci_force_minitest) }}
+      ci_force_asan: ${{ 'push' == 'workflow_dispatch' && 'true' || (steps.ci_config.outputs.ci_force_asan) }}
+      ci_force_perl_unicode: ${{ 'push' == 'workflow_dispatch' && 'true' || (steps.ci_config.outputs.ci_force_perl_unicode) }}
+      ci_force_dist_modules: ${{ 'push' == 'workflow_dispatch' && 'true' || (steps.ci_config.outputs.ci_force_dist_modules) }}
 
     steps:
       - name: Dump GitHub context
